@@ -1,0 +1,4 @@
+serialcmds/Debug/*
+serialcmds/Release/*
+serialcmds/Debug
+serialcmds/Release

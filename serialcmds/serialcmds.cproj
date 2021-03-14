@@ -96,8 +96,8 @@
         </avrgcc.assembler.general.IncludePaths>
       </AvrGcc>
     </ToolchainSettings>
-    <PostBuildEvent>COPY debounce.hex "C:\avrdude\debounce.hex"
-C:\avrdude\avrdude.exe -p m328p -P usb -c usbasp -v -U flash:w:debounce.hex</PostBuildEvent>
+    <PostBuildEvent>COPY debounce.hex "C:\avrdude\serialcmds.hex"
+C:\avrdude\avrdude.exe -p m328p -P usb -c usbasp -v -U flash:w:serialcmds.hex</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
@@ -143,6 +143,7 @@ C:\avrdude\avrdude.exe -p m328p -P usb -c usbasp -v -U flash:w:debounce.hex</Pos
         <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
       </AvrGcc>
     </ToolchainSettings>
+    <PostBuildEvent>COPY</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.c">

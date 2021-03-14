@@ -1,7 +1,7 @@
 /*
  *BIBLIOTECA PARA UTILIZAÇÃO DA UART
- * Modificada por: PROF. RODRIGO RECH
- * DATA: 09/2019
+ * Modificada por: PROF. RODRIGO RECH & Augusto "ReDKiiL" Ferreira
+ * DATA: 07/21
  *CONFIGURAÇÃO: BAUD RATE   -   9600
  *              NBITS       -   8
  *              STOP BITS   -   1 
@@ -29,13 +29,12 @@ void UART_sendChar(unsigned char ch)
    while (! (UCSR0A & (1<<UDRE0)) );
 }
 
-void UART_sendString(char *s)
+void UART_sendString(unsigned char *s)
 {
    unsigned int i=0;
    while (s[i] != '\0') 
    {
        UART_sendChar(s[i]);
-	   s[i] = '\0';
 	   i++;
    };
 }
@@ -54,7 +53,7 @@ void  UART_sendHex(unsigned char ch)
         ch = ch << 4;    
      }   
 }
-void UART_receiveString(char *buffering)
+void UART_receiveString(unsigned char *buffering)
 {
 	if((UCSR0A & (1<<RXC0)))
 	{
@@ -66,6 +65,7 @@ void UART_receiveString(char *buffering)
 			buffering[idx] = item;
 			idx++;
 		}
+		buffering[idx] = '\0';
 	}else{
 		buffering[0] = '\0';
 	}
