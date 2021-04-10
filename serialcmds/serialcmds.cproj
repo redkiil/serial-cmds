@@ -152,6 +152,9 @@ C:\avrdude\avrdude.exe -p m328p -P usb -c usbasp -v -U flash:w:serialcmds.hex</P
     <Compile Include="Parse.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="TTP229.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="UART.h">
       <SubType>compile</SubType>
     </Compile>

@@ -9,11 +9,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "UART.h"
-
-#define TTP_SCL (1<<PINC0)//portc 0 clock
-#define TTP_SDO (1<<PINC1)//portc 1 dados
-
-unsigned char Key = 0;
+#include "TTP229.h"
 
 int main()
 {
@@ -29,15 +25,7 @@ int main()
 
 	while (1)
 	{
-		Key = 0;
-		for(unsigned char i = 0; i < 9;++i){
-			PORTC &= ~(1 << PINC0);
-			if(!(PINC & (1 << PINC1))){
-				char tt = i+'0';
-				UART_sendChar(tt);
-			}
-			PORTC |= (1 << PINC0);
-		}
-		_delay_ms(1000);
+		UART_sendChar(TTP229_readKeypad());
+		_delay_ms(50);
 	}
 }
