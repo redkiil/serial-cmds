@@ -10,18 +10,11 @@
 #include <avr/interrupt.h>
 #include "UART.h"
 
-unsigned long int microsecs = 0;
-volatile unsigned long int millisecs = 0;
-unsigned char times = 0;
+#define TTP_SCL (1<<PINC0)//portc 0 clock
+#define TTP_SDO (1<<PINC1)//portc 1 dados
 
-unsigned long int last = 0;
-unsigned char test = 0;
+unsigned char Key = 0;
 
-ISR(TIMER0_OVF_vect)
-{
-	TCNT0 = 5;
-	millisecs += 1;
-}
 int main()
 {
 	unsigned int ubrr = MYUBRR;
@@ -31,38 +24,20 @@ int main()
 	UCSR0C |= (1<<UCSZ01)|(1<<UCSZ00);
 	UCSR0B |= (1<<RXEN0)|(1<<TXEN0);
 	
-	DDRD = (1<<PIND6);
-	PORTD &= ~(1<<PIND6);
+	DDRC |= (1<<PINC0);
 	
-	TCCR0B = (1<<CS01) | (1<<CS00);
-	
-	TIMSK0 = (1<<TOIE0);
-	
-	TCNT0 = 5;
-	
-	sei();
 
 	while (1)
 	{
-		if(test){
-		if((millisecs-last) >= 100){
-			if(times == 12){
-				times = 0;
+		Key = 0;
+		for(unsigned char i = 0; i < 9;++i){
+			PORTC &= ~(1 << PINC0);
+			if(!(PINC & (1 << PINC1))){
+				char tt = i+'0';
+				UART_sendChar(tt);
 			}
-			if(times <4)PORTD ^= (1<<PIND6);
-			times++;
-			last = millisecs;
-		}	
-		}else{
-			times = 0;
-			PORTD &= ~(1<<PIND6);
+			PORTC |= (1 << PINC0);
 		}
-		
-		unsigned char play[64];
-		UART_receiveString(play);
-		UART_sendString(play);
-		if(!strcmp((const char*)play,"LED\n")){
-			test = !test;
-		}
+		_delay_ms(1000);
 	}
 }
